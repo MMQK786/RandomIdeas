@@ -1,0 +1,16 @@
+{
+  "name": "randomideas",
+  "version": "1.0.0",
+  "description": "idea sharing app",
+  "license": "MIT",
+  "author": "Bashy Khan",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
