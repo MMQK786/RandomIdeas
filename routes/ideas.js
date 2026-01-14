@@ -6,10 +6,6 @@ const router = express.Router();
 const idea = require("../models/Idea");
 const Idea = require("../models/Idea");
 
-//Body parser middlewear
-router.use(express.json()); //will allow us to send raw json to server
-router.use(express.urlencoded({ extended: false }));
-//this allows us to acccess the request.body
 
 let ideas = [
   //   {

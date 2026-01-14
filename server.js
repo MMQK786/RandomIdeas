@@ -1,4 +1,4 @@
-//our entry point
+const path = require('path');
 
 const express = require("express");
 require('dotenv').config();
@@ -8,6 +8,19 @@ const connectDB = require('./config/db');
 
 
 connectDB();
+
+
+//static folder
+app.use(express.static(path.join(__dirname, 'public')))
+//dirname gets the current directory, and join, formats the directory properly
+//this one line, will make our public folder static
+
+
+//Body parser middlewear
+app.use(express.json()); //will allow us to send raw json to server
+app.use(express.urlencoded({ extended: false }));
+//this allows us to acccess the request.body
+
 
 
 //creating routes
