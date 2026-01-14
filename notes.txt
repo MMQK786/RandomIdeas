@@ -9,3 +9,36 @@ the server
 we want to send some data via post, we send it through the body,
 
 in express, to do this, we need to add some middle wear, by excpeting the data between request and response
+
+
+
+to become full stack, you need to know about databases
+DBMS(database management system)
+
+Database systems can run on a file system or across multiple nodes or clusters
+
+There are different types of databases:
+mysql uses tables and columns
+mongodb collections and documents
+
+so the structure differs across databases
+
+
+mongoDB is a no sql/document database, it means, doesnt use sql to query data
+so its different to mysql and postgres
+
+
+very popular in js world(mern, mean, mevin stack)
+meaning - mern - mongoDB express react node js
+        - mean - mongoDB express angular node js
+
+Compass - desktop tool to manage database
+
+mongoose - Node.js package for working with mongoDB
+
+In express you can declare a folder to be static called public, in which you can put html and css files in, and thats what will be loaded
+
+whilst developing, we will use webpack dev server, which runs on localhost:3000
+and the api runs on 5000
+
+but once you are ready to deploy and do npm run build, the production files go into public and the public static folder will be loaded onto 5000 alongside the API
