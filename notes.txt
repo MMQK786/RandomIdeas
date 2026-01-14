@@ -1,2 +1,11 @@
 establish the npm packages, using npm init(json.package)
 then we install express
+
+
+we installed nodemon as a dev dependecy, so that we dont have to keep running it and restarting
+the server
+
+
+we want to send some data via post, we send it through the body,
+
+in express, to do this, we need to add some middle wear, by excpeting the data between request and response
