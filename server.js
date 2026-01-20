@@ -1,6 +1,8 @@
 const path = require('path');
 
 const express = require("express");
+const cors = require("cors") //this will allow us to permit our front end to acess our back end data in development
+//as front end is on localhost 3000 and backend is 5000, without this it wont allow this cross access
 require('dotenv').config();
 const port = process.env.PORT || 5000; //if it cant dind the port then just do 5000
 const app = express();
@@ -21,7 +23,11 @@ app.use(express.json()); //will allow us to send raw json to server
 app.use(express.urlencoded({ extended: false }));
 //this allows us to acccess the request.body
 
-
+//cores middleware
+app.use(cors({
+  origin: ['http://localhost:5000', 'http://localhost:3000'], //we allow both urls to acess server
+  credentials: true,
+}))
 
 //creating routes
 app.get("/", (req, res) => {

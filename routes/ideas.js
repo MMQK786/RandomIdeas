@@ -6,7 +6,6 @@ const router = express.Router();
 const idea = require("../models/Idea");
 const Idea = require("../models/Idea");
 
-
 let ideas = [
   //   {
   //     id: 1,
@@ -82,25 +81,29 @@ router.post("/", async (req, res) => {
 //update idea
 router.put("/:id", async (req, res) => {
   try {
-    // const idea = await Idea.findById(req.params.id);
-    // //updating the idea
-    // console.log(idea)
-    // idea.text = req.body.text || idea.text
-    // idea.tag = req.body.tag || idea.tag
-    // const updated = await idea.save()
+    //we want to check if the username is attached with the post id
+    const idea = await Idea.findById(req.params.id);
+
+    if (idea.username === req.body.username) {
+      const updatedIdea = await Idea.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: {
+            text: req.body.text,
+            tag: req.body.tag,
+          },
+        },
+        { new: true } //if the id doesnt exist, then just create a new object and add it
+      );
+
+      return res.json({ success: true, data: updatedIdea });
+    }
+
+    res
+      .status(403)
+      .json({ success: false, message: "incorrect authorisation" });
 
     //even easier than that
-    const updatedIdea = await Idea.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: {
-          text: req.body.text,
-          tag: req.body.tag,
-        },
-      },
-      { new: true } //if the id doesnt exist, then just create a new object and add it
-    );
-    res.json({ success: true, data: updatedIdea });
   } catch (error) {
     console.log(error);
     return res
@@ -111,10 +114,21 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const deleted = await Idea.findByIdAndDelete(req.params.id);
-    return res
-      .status(200)
-      .json({ success: true, message: "delete successful", data: deleted });
+    const idea = await Idea.findById(req.params.id);
+    console.log(req.body);
+    //match the usernames
+
+    if (idea.username === req.body.username) {
+      const deleted = await Idea.findByIdAndDelete(req.params.id);
+      return res
+        .status(200)
+        .json({ success: true, message: "delete successful", data: deleted });
+    } //can do an else, if we just return, it will exit the function anyway
+
+     res.status(304).json({
+      success: false,
+      message: "You are not authroised to delete this resource",
+    });
   } catch (error) {
     console.log(error);
     return res

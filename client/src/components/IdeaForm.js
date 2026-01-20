@@ -1,8 +1,12 @@
+import IdeasApi from "../services/ideasAPI";
+import IdeaList from "./IdeaList";
+
 class IdeaForm {
   constructor() {
     this.formModal = document.querySelector("#form-modal");
     // this._form = document.querySelector('#idea-form')
     this._form = null;
+    this._list = new IdeaList();
 
     //we get an error can not read properties of null reading addEventListener
     //this is because the item doesnt exist yet, as we arent rendering from index.html anymore
@@ -15,25 +19,44 @@ class IdeaForm {
     //otherwise this will refer to class
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
-    console.log("you jave submitted something");
-    console.log(this._form.elements);
+
+    if (
+      !this._form.elements.text.value ||
+      !this._form.elements.tag.value ||
+      !this._form.username.value
+    ) {
+      alert("please enter all field");
+      return;
+    }
+
+    //Save user to local storage
+
+    localStorage.setItem('username', this._form.elements.username.value)
+
     const idea = {
       text: this._form.elements.text.value,
       tag: this._form.elements.tag.value,
       username: this._form.elements.username.value,
     };
 
-    console.log(idea);
+    //add idea to server
+    const newidea = await IdeasApi.createIdea(idea);
+    this._list.addIdeaToList(newidea.data.data);
+    //add idea to list
+    // this._list.render()
+
+    console.log("jere");
     //clear fields
-     this._form.elements.text.value = ''
-     this._form.elements.username.value = ''
-     this._form.elements.tag.value = ''
+    this._form.elements.text.value = "";
+    this._form.elements.username.value = "";
+    this._form.elements.tag.value = "";
     //in order to close the modal, since the modal has no link here, we will dispatch an event
     //that the modal can listen to
 
-    document.dispatchEvent(new Event('closemodal'));
+
+    document.dispatchEvent(new Event("closemodal"));
     //now we need to listen to this event in the modal class
     //allows component interaction in vanilla JS
   }
@@ -46,7 +69,7 @@ class IdeaForm {
     <form id="idea-form">
           <div class="form-control">
             <label for="idea-text">Enter a Username</label>
-            <input type="text" name="username" id="username" />
+            <input type="text" name="username" id="username" value="${localStorage.getItem('username') ? localStorage.getItem('username') : ''}" />
           </div>
           <div class="form-control">
             <label for="idea-text">What's Your Idea?</label>
